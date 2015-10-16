@@ -15,7 +15,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://colos.adrianhaasler.com
+url: http://colos-multi.adrianhaasler.com
 root: /
 permalink: :lang/:category/:title/
 permalink_defaults:
@@ -73,5 +73,5 @@ theme: colos
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:ahaasler/hexo-theme-colos-demo.git
+  repo: git@github.com:ahaasler/hexo-theme-colos-multilingual-demo.git
   branch: gh-pages
