@@ -10,3 +10,4 @@ post_date_format: D [de] MMMM [del] YYYY
 
 # Directory
 archive_dir: archivo
+category_dir: categorias
