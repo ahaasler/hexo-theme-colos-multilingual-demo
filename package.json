@@ -6,6 +6,7 @@
     "version": "3.1.1"
   },
   "dependencies": {
+    "deepmerge": "^0.2.10",
     "hexo": "^3.1.1",
     "hexo-deployer-git": "0.0.4",
     "hexo-generator-multilingual-archive": "^0.2.0",
@@ -13,7 +14,7 @@
     "hexo-generator-multilingual-feed": "^1.2.1",
     "hexo-generator-multilingual-index": "^0.3.0",
     "hexo-generator-tag": "^0.1.0",
-    "hexo-multilingual": "^0.3.0",
+    "hexo-multilingual": "^0.4.0",
     "hexo-pagination": "0.0.2",
     "hexo-renderer-ejs": "^0.1.0",
     "hexo-renderer-marked": "^0.2.4",
