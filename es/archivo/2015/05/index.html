@@ -7,7 +7,7 @@
 	<title>Colos</title>
 	<meta name="description" content="Un tema para Hexo">
 	<meta name="generator" content="Hexo v3.1.1">
-	<link rel="canonical" href="http://colos.adrianhaasler.com/es/archivo/2015/05/">
+	<link rel="canonical" href="http://colos-multi.adrianhaasler.com/es/archivo/2015/05/">
 	
 		
 			<link rel="alternate" href="/en/archives/2015/05/" hreflang="en" />
@@ -15,22 +15,34 @@
 	
 		
 	
-	<link rel="alternate" type="application/rss+xml" title="Feed RSS" href="http://colos.adrianhaasler.com/es/feed.xml" />
+	<link rel="alternate" type="application/rss+xml" title="Feed RSS" href="http://colos-multi.adrianhaasler.com/es/feed.xml" />
+	<link rel="stylesheet" href="/css/main.css" type="text/css">
+	<script src="/lib/webcomponentsjs/webcomponents-lite.min.js" type="text/javascript"></script>
+	<link rel="import" href="/lib/paper-elements/paper-elements.html">
+	<link rel="import" href="/lib/paper-drawer/paper-drawer.html">
+<link rel="import" href="/lib/paper-drawer/paper-drawer-title.html">
+<link rel="import" href="/lib/paper-drawer/paper-drawer-subheader.html">
+<link rel="import" href="/lib/paper-drawer/paper-drawer-item.html">
+<link rel="import" href="/lib/paper-drawer/paper-drawer-icon-item.html">
+<link rel="import" href="/lib/paper-drawer/paper-drawer-divider.html">
 </head>
 
 <body>
-	<header class="site-header">
+	<paper-drawer-panel>
+		<paper-drawer drawer>
+  <paper-drawer-title photo="http://www.gravatar.com/avatar/9094ec062b91c713390b7e9099a11fa0" name="Adrian Haasler" email="dev@adrianhaasler.com"></paper-drawer-title>
+  <paper-drawer-subheader>Categories</paper-drawer-subheader>
+  <paper-drawer-item class="category-list-item"><a class="category-list-link" href="/es/categorias/codigo/">codigo</a></paper-drawer-item><paper-drawer-item class="category-list-item"><a class="category-list-link" href="/es/categorias/libro/">libro</a></paper-drawer-item>
+</paper-drawer>
+
+		<div main>
+			<header class="site-header">
+	<paper-toolbar>
+		<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+		<a href="/ " id="logo" class="title">Colos</a>
+		<paper-tabs class="category-list"><paper-tab class="category-list-item"><a class="category-list-link" href="/es/categorias/codigo/">codigo</a></paper-tab><paper-tab class="category-list-item"><a class="category-list-link" href="/es/categorias/libro/">libro</a></paper-tab></paper-tabs>
+	</paper-toolbar>
 	<div class="wrapper">
-		<h1>
-			<a href="/" id="logo">Colos</a>
-		</h1>
-		<ul class="category-list">
-			
-				<li class="category-list-item"><a class="category-list-link" href="/es/libro">Libros</a></li>
-			
-				<li class="category-list-item"><a class="category-list-link" href="/es/codigo">Código</a></li>
-			
-		</ul>
 		<nav id="language">
 			
 				<a href="/en/archives/2015/05/" hreflang="en" title="Colos">
@@ -45,9 +57,9 @@
 	</div>
 </header>
 
-	<div class="page-content">
-		<div class="wrapper">
-			
+			<div class="page-content">
+				<div class="wrapper">
+					
 
 	<article class="post">
 	<header class="post-header">
@@ -118,19 +130,19 @@
 
 
 
-		</div>
-	</div>
-	<nav>
+				</div>
+			</div>
+			<nav>
 	
 		
 		
 	
 </nav>
 
-	<footer class="site-footer">
+			<footer class="site-footer">
 	<div class="wrapper">
 		<div id="footer-copyright">
-			&copy; 2015 <a href="mailto:dev@adrianhaasler.com" title="Adrian Haasler">Adrian Haasler</a>
+			&copy; 2016 <a href="mailto:dev@adrianhaasler.com" title="Adrian Haasler">Adrian Haasler</a>
 		</div>
 		<div id="footer-description">
 			<p>Un tema para Hexo</p>
@@ -138,5 +150,7 @@
 	</div>
 </footer>
 
+		</div>
+	</paper-drawer-panel>
 </body>
 </html>
