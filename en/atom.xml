@@ -4,7 +4,7 @@
   <subtitle xml:lang="en">A Hexo theme</subtitle>
   <link href="http://colos-multi.adrianhaasler.com/en/atom.xml" rel="self"/>
   <link href="http://colos-multi.adrianhaasler.com/"/>
-  <updated>2016-02-17T21:30:28.000Z</updated>
+  <updated>2016-02-21T16:53:48.000Z</updated>
   <id>http://colos-multi.adrianhaasler.com/</id>
   
   <author>
@@ -76,8 +76,8 @@
     <link href="http://colos-multi.adrianhaasler.com/en/code/bash-hello-world/"/>
     <id>http://colos-multi.adrianhaasler.com/en/code/bash-hello-world/</id>
     <published>2015-08-01T14:45:03.000Z</published>
-    <updated>2016-02-17T21:30:28.000Z</updated>
-    <content type="html" xml:lang="en">&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;shebang&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    <updated>2016-02-21T16:53:48.000Z</updated>
+    <content type="html" xml:lang="en">&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 </content>
     <summary type="html" xml:lang="en">
     
