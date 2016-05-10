@@ -1,0 +1,14 @@
+# Colos theme configuration
+
+# Menu
+menu:
+-
+  type: link
+  title: inicio
+  path: es/
+-
+  type: link
+  title: archivo
+  path: es/archivo/
+-
+  type: categories
