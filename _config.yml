@@ -15,8 +15,8 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://colos-multi.adrianhaasler.com
-root: /
+url: https://ahaasler.github.io/hexo-theme-colos-multilingual-demo
+root: /hexo-theme-colos-multilingual-demo/
 permalink: :lang/:category/:title/
 permalink_defaults:
   lang: en
