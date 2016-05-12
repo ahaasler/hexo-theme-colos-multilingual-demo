@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title xml:lang="es">Colos</title>
   <subtitle xml:lang="es">Un tema para Hexo</subtitle>
-  <link href="http://colos-multi.adrianhaasler.com/es/atom.xml" rel="self"/>
-  <link href="http://colos-multi.adrianhaasler.com/"/>
+  <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/atom.xml" rel="self"/>
+  <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/"/>
   <updated>2016-02-17T21:30:28.000Z</updated>
-  <id>http://colos-multi.adrianhaasler.com/</id>
+  <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/</id>
   
   <author>
     <name>Adrian Haasler</name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title xml:lang="es">JavaScript: ¡Hola Mundo!</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/codigo/js-hola-mundo/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/codigo/js-hola-mundo/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/js-hola-mundo/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/js-hola-mundo/</id>
     <published>2015-08-15T06:03:08.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;.write(&lt;span class=&quot;string&quot;&gt;&#39;¡Hola Mundo!&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -28,15 +28,15 @@
     
     </summary>
     
-      <category term="codigo" scheme="http://colos-multi.adrianhaasler.com/categories/codigo/"/>
+      <category term="codigo" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/codigo/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Groovy: ¡Hola Mundo!</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/codigo/groovy-hola-mundo/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/codigo/groovy-hola-mundo/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/groovy-hola-mundo/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/groovy-hola-mundo/</id>
     <published>2015-08-01T20:03:22.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;println &lt;span class=&quot;string&quot;&gt;&quot;¡Hola Mundo!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -47,15 +47,15 @@
     
     </summary>
     
-      <category term="codigo" scheme="http://colos-multi.adrianhaasler.com/categories/codigo/"/>
+      <category term="codigo" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/codigo/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Ruby: ¡Hola Mundo!</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/codigo/ruby-hola-mundo/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/codigo/ruby-hola-mundo/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/ruby-hola-mundo/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/ruby-hola-mundo/</id>
     <published>2015-08-01T15:44:52.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;figure class=&quot;highlight ruby&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;puts &lt;span class=&quot;string&quot;&gt;&#39;¡Hola Mundo!&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -66,15 +66,15 @@
     
     </summary>
     
-      <category term="codigo" scheme="http://colos-multi.adrianhaasler.com/categories/codigo/"/>
+      <category term="codigo" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/codigo/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Bash: ¡Hola Mundo!</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/codigo/bash-hola-mundo/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/codigo/bash-hola-mundo/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/bash-hola-mundo/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/bash-hola-mundo/</id>
     <published>2015-08-01T14:45:15.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;¡Hola Mundo!&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -85,15 +85,15 @@
     
     </summary>
     
-      <category term="codigo" scheme="http://colos-multi.adrianhaasler.com/categories/codigo/"/>
+      <category term="codigo" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/codigo/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Java: ¡Hola Mundo!</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/codigo/java-hola-mundo/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/codigo/java-hola-mundo/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/java-hola-mundo/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/codigo/java-hola-mundo/</id>
     <published>2015-08-01T14:32:14.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;HelloWorld&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;¡Hola Mundo!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -104,15 +104,15 @@
     
     </summary>
     
-      <category term="codigo" scheme="http://colos-multi.adrianhaasler.com/categories/codigo/"/>
+      <category term="codigo" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/codigo/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Don Quijote Capítulo IV: De lo que le sucedió a nuestro caballero cuando salió de la venta</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/libro/don-quijote-IV/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/libro/don-quijote-IV/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-IV/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-IV/</id>
     <published>2015-05-26T19:22:57.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;p&gt;La del alba sería cuando don Quijote salió de la venta, tan contento, tan gallardo, tan alborozado por verse ya armado caballero, que el gozo le reventaba por las cinchas del caballo. Mas, viniéndole a la memoria los consejos de su huésped cerca de las prevenciones tan necesarias que había de llevar consigo, especial la de los dineros y camisas, determinó volver a su casa y acomodarse de todo, y de un escudero, haciendo cuenta de recebir a un labrador vecino suyo, que era pobre y con hijos, pero muy a propósito para el oficio escuderil de la caballería. Con este pensamiento guió a Rocinante hacia su aldea, el cual, casi conociendo la querencia, con tanta gana comenzó a caminar, que parecía que no ponía los pies en el suelo.&lt;/p&gt;
@@ -166,15 +166,15 @@
     
     </summary>
     
-      <category term="libro" scheme="http://colos-multi.adrianhaasler.com/categories/libro/"/>
+      <category term="libro" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/libro/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Don Quijote Capítulo III: Donde se cuenta la graciosa manera que tuvo don Quijote en armarse caballero</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/libro/don-quijote-III/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/libro/don-quijote-III/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-III/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-III/</id>
     <published>2015-05-25T23:04:57.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;p&gt;Y así, fatigado deste pensamiento, abrevió su venteril y limitada cena; la cual acabada, llamó al ventero, y, encerrándose con él en la caballeriza, se hincó de rodillas ante él, diciéndole:&lt;/p&gt;
@@ -210,15 +210,15 @@
     
     </summary>
     
-      <category term="libro" scheme="http://colos-multi.adrianhaasler.com/categories/libro/"/>
+      <category term="libro" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/libro/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Don Quijote Capítulo II: Que trata de la primera salida que de su tierra hizo el ingenioso don Quijote</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/libro/don-quijote-II/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/libro/don-quijote-II/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-II/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-II/</id>
     <published>2015-05-24T12:28:45.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;p&gt;Hechas, pues, estas prevenciones, no quiso aguardar más tiempo a poner en efecto su pensamiento, apretándole a ello la falta que él pensaba que hacía en el mundo su tardanza, según eran los agravios que pensaba deshacer, tuertos que enderezar, sinrazones que emendar, y abusos que mejorar y deudas que satisfacer. Y así, sin dar parte a persona alguna de su intención, y sin que nadie le viese, una mañana, antes del día, que era uno de los calurosos del mes de julio, se armó de todas sus armas, subió sobre Rocinante, puesta su mal compuesta celada, embrazó su adarga, tomó su lanza, y, por la puerta falsa de un corral, salió al campo con grandísimo contento y alborozo de ver con cuánta facilidad había dado principio a su buen deseo. Mas, apenas se vio en el campo, cuando le asaltó un pensamiento terrible, y tal, que por poco le hiciera dejar la comenzada empresa; y fue que le vino a la memoria que no era armado caballero, y que, conforme a ley de caballería, ni podía ni debía tomar armas con ningún caballero; y, puesto que lo fuera, había de llevar armas blancas, como novel caballero, sin empresa en el escudo, hasta que por su esfuerzo la ganase. Estos pensamientos le hicieron titubear en su propósito; mas, pudiendo más su locura que otra razón alguna, propuso de hacerse armar caballero del primero que topase, a imitación de otros muchos que así lo hicieron, según él había leído en los libros que tal le tenían. En lo de las armas blancas, pensaba limpiarlas de manera, en teniendo lugar, que lo fuesen más que un armiño; y con esto se quietó y prosiguió su camino, sin llevar otro que aquel que su caballo quería, creyendo que en aquello consistía la fuerza de las aventuras.&lt;/p&gt;
@@ -258,15 +258,15 @@
     
     </summary>
     
-      <category term="libro" scheme="http://colos-multi.adrianhaasler.com/categories/libro/"/>
+      <category term="libro" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/libro/"/>
     
     
   </entry>
   
   <entry>
     <title xml:lang="es">Don Quijote Capítulo I: Que trata de la condición y ejercicio del famoso hidalgo don Quijote de la Mancha</title>
-    <link href="http://colos-multi.adrianhaasler.com/es/libro/don-quijote-I/"/>
-    <id>http://colos-multi.adrianhaasler.com/es/libro/don-quijote-I/</id>
+    <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-I/"/>
+    <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/es/libro/don-quijote-I/</id>
     <published>2015-05-23T17:26:49.000Z</published>
     <updated>2016-02-17T21:30:28.000Z</updated>
     <content type="html" xml:lang="es">&lt;p&gt;En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lantejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda. El resto della concluían sayo de velarte, calzas de velludo para las fiestas, con sus pantuflos de lo mesmo, y los días de entresemana se honraba con su vellorí de lo más fino. Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera. Frisaba la edad de nuestro hidalgo con los cincuenta años; era de complexión recia, seco de carnes, enjuto de rostro, gran madrugador y amigo de la caza. Quieren decir que tenía el sobrenombre de Quijada, o Quesada, que en esto hay alguna diferencia en los autores que deste caso escriben; aunque, por conjeturas verosímiles, se deja entender que se llamaba Quejana. Pero esto importa poco a nuestro cuento; basta que en la narración dél no se salga un punto de la verdad.&lt;/p&gt;
@@ -288,7 +288,7 @@
     
     </summary>
     
-      <category term="libro" scheme="http://colos-multi.adrianhaasler.com/categories/libro/"/>
+      <category term="libro" scheme="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/categories/libro/"/>
     
     
   </entry>
