@@ -21,7 +21,7 @@
 <link rel="import" href="/hexo-theme-colos-multilingual-demo/lib/paper-drawer/paper-drawer-divider.html">
 </head>
 
-<body>
+<body class="fullbleed">
 	<paper-drawer-panel>
 		<paper-drawer drawer>
   <paper-drawer-title photo="https://www.gravatar.com/avatar/9094ec062b91c713390b7e9099a11fa0" name="Adrian Haasler" email="dev@adrianhaasler.com"></paper-drawer-title>
@@ -29,16 +29,14 @@
   <paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/en/">home</a></paper-drawer-item><paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/en/archives/">archives</a></paper-drawer-item><paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/en/categories/book/">book</a></paper-drawer-item><paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/en/categories/code/">code</a></paper-drawer-item>
 </paper-drawer>
 
-		<div main>
-			<header class="site-header">
-	<paper-toolbar>
-		<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-		<a href="/hexo-theme-colos-multilingual-demo/ " id="logo" class="title">Colos</a>
-		<style is="custom-style">paper-tab[link] a { @apply(--layout-horizontal); @apply(--layout-center-center); }</style><paper-tabs selected="3" class="category-list"><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/">home</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/archives/">archives</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/categories/book/">book</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/categories/code/">code</a></paper-tab></paper-tabs>
-		<div class="flex"></div>
-		<paper-tabs class="alternate-list" selected="0"><paper-tab link class="alternate-list-item"><a class="alternate-list-link" href="/hexo-theme-colos-multilingual-demo/en/code/bash-hello-world/" hreflang="en" title="Bash: Hello, World!">en</a></paper-tab><paper-tab link class="alternate-list-item"><a class="alternate-list-link" href="/hexo-theme-colos-multilingual-demo/es/codigo/bash-hola-mundo/" hreflang="es" title="Bash: ¡Hola Mundo!">es</a></paper-tab></paper-tabs>
-	</paper-toolbar>
-</header>
+		<paper-header-panel main mode="waterfall-tall">
+			<paper-toolbar class="tall site-header">
+	<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+	<a href="/hexo-theme-colos-multilingual-demo/ " id="logo" class="title">Colos</a>
+	<style is="custom-style">paper-tab[link] a { @apply(--layout-horizontal); @apply(--layout-center-center); }</style><paper-tabs selected="3" class="category-list"><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/">home</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/archives/">archives</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/categories/book/">book</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/en/categories/code/">code</a></paper-tab></paper-tabs>
+	<div class="flex"></div>
+	<paper-tabs class="alternate-list" selected="0"><paper-tab link class="alternate-list-item"><a class="alternate-list-link" href="/hexo-theme-colos-multilingual-demo/en/code/bash-hello-world/" hreflang="en" title="Bash: Hello, World!">en</a></paper-tab><paper-tab link class="alternate-list-item"><a class="alternate-list-link" href="/hexo-theme-colos-multilingual-demo/es/codigo/bash-hola-mundo/" hreflang="es" title="Bash: ¡Hola Mundo!">es</a></paper-tab></paper-tabs>
+</paper-toolbar>
 
 			<div class="page-content">
 				<div class="wrapper">
@@ -82,7 +80,7 @@
 	</div>
 </footer>
 
-		</div>
+		</paper-header-panel>
 	</paper-drawer-panel>
 </body>
 </html>
