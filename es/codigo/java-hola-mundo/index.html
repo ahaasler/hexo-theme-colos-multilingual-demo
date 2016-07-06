@@ -23,15 +23,19 @@
   <paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/es/">inicio</a></paper-drawer-item><paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/es/archivo/">archivo</a></paper-drawer-item><paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/es/categorias/codigo/">codigo</a></paper-drawer-item><paper-drawer-item><a href="/hexo-theme-colos-multilingual-demo/es/categorias/libro/">libro</a></paper-drawer-item>
 </app-drawer>
 
-		<app-header-layout mode="waterfall-tall">
-			<app-header main effects="waterfall resize-title blend-background parallax-background" condenses reveals>
-	<app-toolbar class="tall site-header">
+		<app-header-layout>
+			<app-header condenses fixed effects="blend-background parallax-background resize-title waterfall">
+	<app-toolbar>
 		<paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
 		<a href="/hexo-theme-colos-multilingual-demo/ " id="logo" class="title">Colos</a>
+		<div condensed-title>Java: ¡Hola Mundo!</div>
 		<div class="flex"></div>
 		<style is="custom-style">paper-tab[link] a { @apply(--layout-horizontal); @apply(--layout-center-center); }</style><paper-tabs selected="2" class="category-list"><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/es/">inicio</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/es/archivo/">archivo</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/es/categorias/codigo/">codigo</a></paper-tab><paper-tab link class="category-list-item"><a class="category-list-link" href="/hexo-theme-colos-multilingual-demo/es/categorias/libro/">libro</a></paper-tab></paper-tabs>
-		<div class="flex"></div>
 		<paper-tabs class="alternate-list" selected="1"><paper-tab link class="alternate-list-item"><a class="alternate-list-link" href="/hexo-theme-colos-multilingual-demo/en/code/java-hello-world/" hreflang="en" title="Java: Hello, World!">en</a></paper-tab><paper-tab link class="alternate-list-item"><a class="alternate-list-link" href="/hexo-theme-colos-multilingual-demo/es/codigo/java-hola-mundo/" hreflang="es" title="Java: ¡Hola Mundo!">es</a></paper-tab></paper-tabs>
+	</app-toolbar>
+	<app-toolbar class="middle"></app-toolbar>
+	<app-toolbar class="bottom">
+		<div title>Java: ¡Hola Mundo!</div>
 	</app-toolbar>
 </app-header>
 
