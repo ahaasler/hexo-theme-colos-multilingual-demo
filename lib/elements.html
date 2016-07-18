@@ -8830,6 +8830,7 @@ Custom property                  | Description                            | Defa
         position: {
           type: String,
           readOnly: true,
+          value: 'left',
           reflectToAttribute: true
         },
 
@@ -8852,7 +8853,7 @@ Custom property                  | Description                            | Defa
       },
 
       observers: [
-        'resetLayout(position, isAttached)',
+        'resetLayout(position)',
         '_resetPosition(align, isAttached)'
       ],
 
@@ -8869,6 +8870,9 @@ Custom property                  | Description                            | Defa
       _lastTabStop: null,
 
       ready: function() {
+        // Set the scroll direction so you can vertically scroll inside the drawer.
+        this.setScrollDirection('y');
+
         // Only transition the drawer after its first render (e.g. app-drawer-layout
         // may need to set the initial opened state which should not be transitioned).
         this._setTransitionDuration('0s');
@@ -8882,12 +8886,9 @@ Custom property                  | Description                            | Defa
           this._boundEscKeydownHandler = this._escKeydownHandler.bind(this);
           this._resetDrawerState();
 
+          this.listen(this, 'track', '_track');
           this.addEventListener('transitionend', this._transitionend.bind(this));
           this.addEventListener('keydown', this._tabKeydownHandler.bind(this))
-
-          // Only listen for horizontal track so you can vertically scroll inside the drawer.
-          this.listen(this, 'track', '_track');
-          this.setScrollDirection('y');
         });
       },
 
@@ -8926,13 +8927,16 @@ Custom property                  | Description                            | Defa
       },
 
       /**
-       * Resets the layout. The event fired is used by app-drawer-layout to position the
-       * content.
+       * Resets the layout. If you changed the size of app-header via CSS
+       * you can notify the changes by either firing the `iron-resize` event
+       * or calling `resetLayout` directly.
        *
        * @method resetLayout
        */
       resetLayout: function() {
-        this.fire('app-drawer-reset-layout');
+        this.debounce('_resetLayout', function() {
+          this.fire('app-drawer-reset-layout');
+        }, 1);
       },
 
       _isRTL: function() {
@@ -9632,7 +9636,7 @@ With an app-header-layout:
   <app-header-layout>
     <app-header>
       <app-toolbar>
-        <div main-title>App name</div>
+        <div title>App name</div>
       </app-toolbar>
     </app-header>
 
@@ -9653,7 +9657,7 @@ Add the `drawer-toggle` attribute to elements inside `app-drawer-layout` that to
     <app-header>
       <app-toolbar>
         <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-        <div main-title>App name</div>
+        <div title>App name</div>
       </app-toolbar>
     </app-header>
 
@@ -9785,7 +9789,12 @@ Custom property                          | Description                          
 
       resetLayout: function() {
         this.debounce('_resetLayout', function() {
+          if (!this.isAttached) {
+            return;
+          }
+
           var drawer = this.drawer;
+          var drawerWidth = this.drawer.getWidth();
           var contentContainer = this.$.contentContainer;
 
           if (this.narrow) {
@@ -9798,7 +9807,6 @@ Custom property                          | Description                          
             drawer.opened = drawer.persistent = true;
             contentContainer.classList.remove('narrow');
 
-            var drawerWidth = this.drawer.getWidth();
             if (drawer.position == 'right') {
               contentContainer.style.marginLeft = '';
               contentContainer.style.marginRight = drawerWidth + 'px';
@@ -10427,18 +10435,18 @@ if using `reveals`, the header slides back when scrolling back up. For example:
 ```html
 <app-header reveals>
   <app-toolbar>
-    <div main-title>App name</div>
+    <div title>App name</div>
   </app-toolbar>
 </app-header>
 ```
 
 app-header can also condense when scrolling down. To achieve this behavior, the header
-must have a larger height than the `sticky` element in the light DOM. For example:
+must have a larger height than the `primary` element in the light DOM. For example:
 
 ```html
 <app-header style="height: 96px;" condenses fixed>
   <app-toolbar style="height: 64px;">
-    <div main-title>App name</div>
+    <div title>App name</div>
   </app-toolbar>
 </app-header>
 ```
@@ -10446,27 +10454,27 @@ must have a larger height than the `sticky` element in the light DOM. For exampl
 In this case the header is initially `96px` tall, and it shrinks to `64px` when scrolling down.
 That is what is meant by "condensing".
 
-### Sticky element
+### Primary element
 
-The element that is positioned fixed to top of the header's `scrollTarget` when a threshold
-is reached, similar to `position: sticky` in CSS. This element **must** be an immediate
-child of app-header. By default, the `sticky` element is the first `app-toolbar that
-is an immediate child of app-header.
+As the header condenses, the immediate children of app-header are stacked up.
+In this case, the primary element is the immediate child that would always stayed above
+the others as the header condenses. By default, the `primary` element is the first app-toolbar
+that is an immediate children of app-header.
 
 ```html
 <app-header condenses>
-  <app-toolbar> Sticky element </app-toolbar>
+  <app-toolbar> Primary element </app-toolbar>
 </app-header>
 ```
-
-#### Customizing the sticky element
 
 ```html
 <app-header condenses>
   <app-toolbar></app-toolbar>
-  <app-toolbar sticky> Sticky element </app-toolbar>
+  <app-toolbar primary> Primary element </app-toolbar>
 </app-header>
 ```
+
+The primary element must be a direct child of app-header.
 
 ### Scroll target
 
@@ -10558,7 +10566,7 @@ This value can be assigned via the `scalar` config value and it is typically a v
 between 0 and 1 inclusive. If `scalar=0`, the background doesn't move away from the header.
 
 * **resize-title**
-Progressively interpolates the size of the title from the element with the `main-title` attribute
+Progressively interpolates the size of the title from the element with the `title` attribute
 to the element with the `condensed-title` attribute as the header condenses. For example:
 
 ```html
@@ -10567,14 +10575,14 @@ to the element with the `condensed-title` attribute as the header condenses. For
       <h4 condensed-title>App name</h4>
   </app-toolbar>
   <app-toolbar>
-      <h1 main-title>App name</h1>
+      <h1 title>App name</h1>
   </app-toolbar>
 </app-header>
 ```
 
 * **resize-snapped-title**
 Upon scrolling past a threshold, this effect fades in/out the titles using opacity transitions.
-Similarly to `resize-title`, the `main-title` and `condensed-title` elements must be placed in the
+Similarly to `resize-title`, the `title` and `condensed-title` elements must be placed in the
 light DOM.
 
 * **waterfall**
@@ -10593,7 +10601,7 @@ app-header {
 ```html
 <app-header condenses reveals effects="waterfall">
   <app-toolbar>
-      <h1 main-title>App name</h1>
+      <h1 title>App name</h1>
   </app-toolbar>
 </app-header>
 ```
@@ -10605,7 +10613,7 @@ Installs the waterfall, resize-title, blend-background and parallax-background e
 
 Attribute | Description         | Default
 ----------|---------------------|----------------------------------------
-`sticky` | Element that remains at the top when the header condenses. | The first app-toolbar in the light DOM.
+`primary` | Element that remains at the top when the header condenses. | The first app-toolbar in the light DOM.
 
 
 ## Styling
@@ -10626,7 +10634,7 @@ Mixin | Description | Default
 @demo app-header/demo/music.html Reveals Demo
 @demo app-header/demo/no-effects.html Condenses and Reveals Demo
 @demo app-header/demo/notes.html Fixed with Dynamic Shadow Demo
-@demo app-header/demo/custom-sticky-element.html Custom Sticky Element Demo
+@demo app-header/demo/custom-primary-element.html Custom Primary Element Demo
 -->
 
 <dom-module id="app-header" assetpath="app-layout/app-header/">
@@ -10667,7 +10675,7 @@ Mixin | Description | Default
         opacity: 0;
       }
 
-      #contentContainer > ::content [main-title] {
+      #contentContainer > ::content [title] {
         -webkit-transform-origin: left top;
         transform-origin: left top;
         white-space: nowrap;
@@ -10706,14 +10714,14 @@ Mixin | Description | Default
       :host([disabled]) #backgroundFrontLayer,
       :host([disabled]) #backgroundRearLayer,
       :host([disabled]) ::content > app-toolbar:first-of-type,
-      :host([disabled]) ::content > [sticky],
+      :host([disabled]) ::content > [primary],
       /* Silent scrolling should not run CSS transitions */
       :host-context(.app-layout-silent-scroll),
       :host-context(.app-layout-silent-scroll)::after,
       :host-context(.app-layout-silent-scroll) #backgroundFrontLayer,
       :host-context(.app-layout-silent-scroll) #backgroundRearLayer,
       :host-context(.app-layout-silent-scroll) ::content > app-toolbar:first-of-type,
-      :host-context(.app-layout-silent-scroll) ::content > [sticky] {
+      :host-context(.app-layout-silent-scroll) ::content > [primary] {
         transition: none !important;
       }
     </style>
@@ -10734,10 +10742,10 @@ Mixin | Description | Default
       properties: {
         /**
          * If true, the header will automatically collapse when scrolling down.
-         * That is, the `sticky` element remains visible when the header is fully condensed
-         * whereas the rest of the elements will collapse below `sticky` element.
+         * That is, the `primary` element remains visible when the header is fully condensed
+         * whereas the rest of the elements will collapse below `primary` element.
          *
-         * By default, the `sticky` element is the first toolbar in the light DOM:
+         * By default, the `primary` element is the first toolbar in the light DOM:
          *
          *```html
          * <app-header condenses>
@@ -10748,18 +10756,18 @@ Mixin | Description | Default
          * ```
          *
          * Additionally, you can specify which toolbar or element remains visible in condensed mode
-         * by adding the `sticky` attribute to that element. For example: if we want the last
-         * toolbar to remain visible, we can add the `sticky` attribute to it.
+         * by adding the `primary` attribute to that element. For example: if we want the last
+         * toolbar to remain visible, we can add the `primary` attribute to it.
          *
          *```html
          * <app-header condenses>
          *   <app-toolbar></app-toolbar>
          *   <app-toolbar></app-toolbar>
-         *   <app-toolbar sticky>This toolbar remains on top</app-toolbar>
+         *   <app-toolbar primary>This toolbar remains on top</app-toolbar>
          * </app-header>
          * ```
          *
-         * Note the `sticky` element must be a direct child of `app-header`.
+         * Note the `primary` element must be a child of `app-header`.
          */
         condenses: {
           type: Boolean,
@@ -10815,18 +10823,18 @@ Mixin | Description | Default
       _dHeight: 0,
 
       /**
-       * The offsetTop of `_stickyEl`
+       * The offsetTop of `_primaryEl`
        *
        * @type {number}
        */
-      _stickyElTop: 0,
+      _primaryElTop: 0,
 
       /**
        * The element that remains visible when the header condenses.
        *
        * @type {HTMLElement}
        */
-      _stickyEl: null,
+      _primaryEl: null,
 
       /**
        * The header's top value used for the `transformY`
@@ -10858,27 +10866,27 @@ Mixin | Description | Default
       },
 
       /**
-       * Returns a reference to the sticky element.
+       * Returns a reference to the element that remains visible when the header condenses.
        *
        * @return {HTMLElement}?
        */
-      _getStickyEl: function() {
+      _getPrimaryEl: function() {
         /** @type {HTMLElement} */
-        var stickyEl;
+        var primaryEl;
         var nodes = Polymer.dom(this.$.content).getDistributedNodes();
 
         for (var i = 0; i < nodes.length; i++) {
           if (nodes[i].nodeType === Node.ELEMENT_NODE) {
             var node = /** @type {HTMLElement} */ (nodes[i]);
-            if (node.hasAttribute('sticky')) {
-              stickyEl = node;
+            if (node.hasAttribute('primary')) {
+              primaryEl = node;
               break;
-            } else if (!stickyEl) {
-              stickyEl = node;
+            } else if (!primaryEl) {
+              primaryEl = node;
             }
           }
         }
-        return stickyEl;
+        return primaryEl;
       },
 
       /**
@@ -10902,7 +10910,7 @@ Mixin | Description | Default
           var currentDisabled = this.disabled;
 
           this._height = this.offsetHeight;
-          this._stickyEl = this._getStickyEl();
+          this._primaryEl = this._getPrimaryEl();
           this.disabled = true;
 
           // prepare for measurement
@@ -10911,12 +10919,12 @@ Mixin | Description | Default
           }
 
           if (this._mayMove()) {
-            this._dHeight = this._stickyEl ? this._height - this._stickyEl.offsetHeight : 0;
+            this._dHeight = this._primaryEl ? this._height - this._primaryEl.offsetHeight : 0;
           } else {
             this._dHeight = 0;
           }
 
-          this._stickyElTop = this._stickyEl ? this._stickyEl.offsetTop : 0;
+          this._primaryElTop = this._primaryEl ? this._primaryEl.offsetTop : 0;
           this._setUpEffect();
 
           if (firstSetup) {
@@ -11053,9 +11061,9 @@ Mixin | Description | Default
        */
       _transformHeader: function(y) {
         this.translate3d(0, (-y) + 'px', 0);
-        if (this._stickyEl && this.condenses && y >= this._stickyElTop) {
-          this.translate3d(0, (Math.min(y, this._dHeight) - this._stickyElTop) + 'px', 0,
-              this._stickyEl);
+        if (this._primaryEl && this.condenses && y >= this._primaryElTop) {
+          this.translate3d(0, (Math.min(y, this._dHeight) - this._primaryElTop) + 'px', 0,
+              this._primaryEl);
         }
       },
 
@@ -11095,8 +11103,8 @@ Mixin | Description | Default
           case 'background':
             this._ensureBgContainers();
             return this._bgContainer;
-          case 'mainTitle':
-            return Polymer.dom(this).querySelector('[main-title]');
+          case 'title':
+            return Polymer.dom(this).querySelector('[title]');
           case 'condensedTitle':
             return Polymer.dom(this).querySelector('[condensed-title]');
         }
@@ -11140,7 +11148,7 @@ Using the document scroll:
 <app-header-layout>
   <app-header fixed condenses effects="waterfall">
     <app-toolbar>
-      <div main-title>App name</div>
+      <div title>App name</div>
     </app-toolbar>
   </app-header>
   <div>
@@ -11155,7 +11163,7 @@ Using an own scrolling region:
 <app-header-layout has-scrolling-region style="width: 300px; height: 400px;">
   <app-header fixed condenses effects="waterfall">
     <app-toolbar>
-      <div main-title>App name</div>
+      <div title>App name</div>
     </app-toolbar>
   </app-header>
   <div>
@@ -11164,20 +11172,11 @@ Using an own scrolling region:
 </app-header-layout>
 ```
 
-Add the `fullbleed` attribute to app-header-layout to make it fit the size of its container:
-
-```html
-<app-header-layout fullbleed>
- ...
-</app-header-layout>
-```
-
 @group App Elements
 @element app-header-layout
 @demo app-header-layout/demo/simple.html Simple Demo
 @demo app-header-layout/demo/scrolling-region.html Scrolling Region
 @demo app-header-layout/demo/music.html Music Demo
-@demo app-header-layout/demo/footer.html Footer Demo
 -->
 
 <dom-module id="app-header-layout" assetpath="app-layout/app-header-layout/">
@@ -11185,6 +11184,7 @@ Add the `fullbleed` attribute to app-header-layout to make it fit the size of it
     <style>
       :host {
         display: block;
+
         /**
          * Force app-header-layout to have its own stacking context so that its parent can
          * control the stacking of it relative to other elements (e.g. app-drawer-layout).
@@ -11195,33 +11195,18 @@ Add the `fullbleed` attribute to app-header-layout to make it fit the size of it
         z-index: 0;
       }
 
-      :host > ::content > app-header {
-        @apply(--layout-fixed-top);
-        z-index: 1;
-      }
-
       :host([has-scrolling-region]) {
         height: 100%;
       }
 
+      :host > ::content > app-header {
+        @apply(--layout-fixed-top);
+
+        z-index: 1;
+      }
+
       :host([has-scrolling-region]) > ::content > app-header {
         position: absolute;
-      }
-
-      :host([has-scrolling-region]) > #contentContainer {
-        @apply(--layout-fit);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      :host([fullbleed]) {
-        @apply(--layout-vertical);
-        @apply(--layout-fit);
-      }
-
-      :host([fullbleed]) > #contentContainer {
-        @apply(--layout-vertical);
-        @apply(--layout-flex);
       }
 
       #contentContainer {
@@ -11230,6 +11215,12 @@ Add the `fullbleed` attribute to app-header-layout to make it fit the size of it
         z-index: 0;
       }
 
+      :host([has-scrolling-region]) > #contentContainer {
+        @apply(--layout-fit);
+
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
     </style>
 
     <content id="header" select="app-header"></content>
@@ -11294,9 +11285,11 @@ Add the `fullbleed` attribute to app-header-layout to make it fit the size of it
         if (!this.isAttached || !header) {
           return;
         }
+
         // Get header height here so that style reads are batched together before style writes
         // (i.e. getBoundingClientRect() below).
         var headerHeight = header.offsetHeight;
+
         // Update the header position.
         if (!this.hasScrollingRegion) {
           var rect = this.getBoundingClientRect();
@@ -11307,6 +11300,7 @@ Add the `fullbleed` attribute to app-header-layout to make it fit the size of it
           header.style.left = '';
           header.style.right = '';
         }
+
         // Update the content container position.
         var containerStyle = this.$.contentContainer.style;
         if (header.fixed && !header.willCondense() && this.hasScrollingRegion) {
@@ -11462,7 +11456,7 @@ Add a title to the toolbar.
 
 ```html
 <app-toolbar>
-  <div main-title>App name</div>
+  <div title>App name</div>
 </app-toolbar>
 ```
 
@@ -11471,7 +11465,7 @@ Add a button to the left and right side of the toolbar.
 ```html
 <app-toolbar>
   <paper-icon-button icon="menu"></paper-icon-button>
-  <div main-title>App name</div>
+  <div title>App name</div>
   <paper-icon-button icon="search"></paper-icon-button>
 </app-toolbar>
 ```
@@ -11483,7 +11477,7 @@ to the top or bottom of the toolbar respectively.
 
 Attribute            | Description 
 ---------------------|---------------------------------------------------------
-`main-title`         | The main title element.
+`title`              | The main title element.
 `condensed-title`    | The title element if used inside a condensed app-header.
 `spacer`             | Adds a left margin of `64px`.
 `bottom-item`        | Sticks the element to the bottom of the toolbar.
@@ -11526,7 +11520,7 @@ Custom property              | Description                  | Default
         font-size: 0;
       }
 
-      :host > ::content > [main-title],
+      :host > ::content > [title],
       :host > ::content > [condensed-title] {
         pointer-events: none;
         @apply(--layout-flex);
@@ -11912,7 +11906,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer.AppLayout.registerEffect('resize-title', {
       /** @this Polymer.AppLayout.ElementWithBackground */
       setUp: function setUp() {
-        var title = this._getDOMRef('mainTitle');
+        var title = this._getDOMRef('title');
         var condensedTitle = this._getDOMRef('condensedTitle');
 
         if (!condensedTitle) {
@@ -11920,7 +11914,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return false;
         }
         if (!title) {
-          this._warn(this._logf('effects[resize-title]', 'undefined `main-title`'));
+          this._warn(this._logf('effects[resize-title]', 'undefined `title`'));
           return false;
         }
 
@@ -12061,7 +12055,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * @this Polymer.AppLayout.ElementWithBackground
      */
     setUp: function setUp(config) {
-      var title = this._getDOMRef('mainTitle');
+      var title = this._getDOMRef('title');
       var condensedTitle = this._getDOMRef('condensedTitle');
       var duration = config.duration || '0.2s';
       var fx = {};
@@ -12071,7 +12065,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return false;
       }
       if (!title) {
-        this._warn(this._logf('effects[resize-snapped-title]', 'undefined `main-title`'));
+        this._warn(this._logf('effects[resize-snapped-title]', 'undefined `title`'));
         return false;
       }
 
@@ -12518,24 +12512,22 @@ Custom property | Description | Default
 -->
 
 <dom-module id="iron-icon" assetpath="iron-icon/">
-
-  <style>
-    :host {
-      @apply(--layout-inline);
-      @apply(--layout-center-center);
-      position: relative;
-
-      vertical-align: middle;
-
-      fill: var(--iron-icon-fill-color, currentcolor);
-      stroke: var(--iron-icon-stroke-color, none);
-
-      width: var(--iron-icon-width, 24px);
-      height: var(--iron-icon-height, 24px);
-    }
-  </style>
-
   <template>
+    <style>
+      :host {
+        @apply(--layout-inline);
+        @apply(--layout-center-center);
+        position: relative;
+
+        vertical-align: middle;
+
+        fill: var(--iron-icon-fill-color, currentcolor);
+        stroke: var(--iron-icon-stroke-color, none);
+
+        width: var(--iron-icon-width, 24px);
+        height: var(--iron-icon-height, 24px);
+      }
+    </style>
   </template>
 
   <script>
@@ -15012,7 +15004,6 @@ Apply `circle` class to make the rippling effect within a circle.
   })();
 </script>
 <script>
-
   /**
    * `Polymer.PaperRippleBehavior` dynamically implements a ripple
    * when the element has focus via pointer or keyboard.
@@ -15023,7 +15014,6 @@ Apply `circle` class to make the rippling effect within a circle.
    * @polymerBehavior Polymer.PaperRippleBehavior
    */
   Polymer.PaperRippleBehavior = {
-
     properties: {
       /**
        * If true, the element will not produce a ripple effect when interacted
@@ -15124,9 +15114,7 @@ Apply `circle` class to make the rippling effect within a circle.
         this._ripple.noink = noink;
       }
     }
-
   };
-
 </script><!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -15137,12 +15125,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <script>
-
   /** @polymerBehavior Polymer.PaperButtonBehavior */
   Polymer.PaperButtonBehaviorImpl = {
-
     properties: {
-
       /**
        * The z-depth of this element, from 0-5. Setting to 0 will remove the
        * shadow, and each increasing number greater than 0 will be "deeper"
@@ -15157,7 +15142,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         reflectToAttribute: true,
         readOnly: true
       }
-
     },
 
     observers: [
@@ -15213,7 +15197,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._ripple.uiUpAction();
       }
     }
-
   };
 
   /** @polymerBehavior */
@@ -15223,7 +15206,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer.PaperRippleBehavior,
     Polymer.PaperButtonBehaviorImpl
   ];
-
 </script><!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -15522,10 +15504,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /**
      * Returns false if the element is required and not checked, and true otherwise.
      * @param {*=} _value Ignored.
-     * @return {boolean} true if `required` is false, or if `required` and `checked` are both true.
+     * @return {boolean} true if `required` is false or if `checked` is true.
      */
     _getValidity: function(_value) {
-      return this.disabled || !this.required || (this.required && this.checked);
+      return this.disabled || !this.required || this.checked;
     },
 
     /**
@@ -15582,14 +15564,12 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 --><script>
-
   /**
    * `Polymer.PaperInkyFocusBehavior` implements a ripple when the element has keyboard focus.
    *
    * @polymerBehavior Polymer.PaperInkyFocusBehavior
    */
   Polymer.PaperInkyFocusBehaviorImpl = {
-
     observers: [
       '_focusedChanged(receivedFocusFromKeyboard)'
     ],
@@ -15610,7 +15590,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ripple.classList.add('circle');
       return ripple;
     }
-
   };
 
   /** @polymerBehavior Polymer.PaperInkyFocusBehavior */
@@ -15620,10 +15599,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer.PaperRippleBehavior,
     Polymer.PaperInkyFocusBehaviorImpl
   ];
-
 </script>
 <script>
-
   /**
    * Use `Polymer.PaperCheckedElementBehavior` to implement a custom element
    * that has a `checked` property similar to `Polymer.IronCheckedElementBehavior`
@@ -15631,7 +15608,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @polymerBehavior Polymer.PaperCheckedElementBehavior
    */
   Polymer.PaperCheckedElementBehaviorImpl = {
-
     /**
      * Synchronizes the element's checked state with its ripple effect.
      */
@@ -15658,7 +15634,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.checked = this.active;
       }
     }
-
   };
 
   /** @polymerBehavior Polymer.PaperCheckedElementBehavior */
@@ -15667,7 +15642,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer.IronCheckedElementBehavior,
     Polymer.PaperCheckedElementBehaviorImpl
   ];
-
 </script><!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -16672,6 +16646,8 @@ Custom property | Description | Default
 `--paper-checkbox-label-color` | Label color | `--primary-text-color`
 `--paper-checkbox-label-checked-color` | Label color when the input is checked | `--paper-checkbox-label-color`
 `--paper-checkbox-label-spacing` | Spacing between the label and the checkbox | `8px`
+`--paper-checkbox-label` | Mixin applied to the label | `{}`
+`--paper-checkbox-label-checked` | Mixin applied to the label when the input is checked | `{}`
 `--paper-checkbox-error-color` | Checkbox color when invalid | `--error-color`
 `--paper-checkbox-size` | Size of the checkbox | `18px`
 `--paper-checkbox-margin` | Margin around the checkbox container | `initial`
@@ -16694,6 +16670,10 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
         @apply(--paper-font-common-base);
         line-height: 0;
         -webkit-tap-highlight-color: transparent;
+      }
+
+      :host([hidden]) {
+        display: none !important;
       }
 
       :host(:focus) {
@@ -16808,10 +16788,12 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
         white-space: normal;
         line-height: normal;
         color: var(--paper-checkbox-label-color, --primary-text-color);
+        @apply(--paper-checkbox-label);
       }
 
       :host([checked]) #checkboxLabel {
         color: var(--paper-checkbox-label-checked-color, --paper-checkbox-label-color);
+        @apply(--paper-checkbox-label-checked);
       }
 
       :host-context([dir="rtl"]) #checkboxLabel {
@@ -18879,46 +18861,46 @@ Custom property | Description | Default
 
 <dom-module id="paper-dialog-scrollable" assetpath="paper-dialog-scrollable/">
 
-  <style>
-
-    :host {
-      display: block;
-      @apply(--layout-relative);
-    }
-
-    :host(.is-scrolled:not(:first-child))::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--divider-color);
-    }
-
-    :host(.can-scroll:not(.scrolled-to-bottom):not(:last-child))::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--divider-color);
-    }
-
-    .scrollable {
-      padding: 0 24px;
-
-      @apply(--layout-scroll);
-      @apply(--paper-dialog-scrollable);
-    }
-
-    .fit {
-      @apply(--layout-fit);
-    }
-  </style>
-
   <template>
+    <style>
+
+      :host {
+        display: block;
+        @apply(--layout-relative);
+      }
+
+      :host(.is-scrolled:not(:first-child))::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--divider-color);
+      }
+
+      :host(.can-scroll:not(.scrolled-to-bottom):not(:last-child))::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--divider-color);
+      }
+
+      .scrollable {
+        padding: 0 24px;
+
+        @apply(--layout-scroll);
+        @apply(--paper-dialog-scrollable);
+      }
+
+      .fit {
+        @apply(--layout-fit);
+      }
+    </style>
+
     <div id="scrollable" class="scrollable">
       <content></content>
     </div>
@@ -19144,28 +19126,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    */
   Polymer.NeonAnimationRunnerBehaviorImpl = {
 
-    properties: {
-
-      /** @type {?Object} */
-      _player: {
-        type: Object
-      }
-
-    },
-
-    _configureAnimationEffects: function(allConfigs) {
-      var allAnimations = [];
-      if (allConfigs.length > 0) {
-        for (var config, index = 0; config = allConfigs[index]; index++) {
-          var animation = document.createElement(config.name);
+    _configureAnimations: function(configs) {
+      var results = [];
+      if (configs.length > 0) {
+        for (var config, index = 0; config = configs[index]; index++) {
+          var neonAnimation = document.createElement(config.name);
           // is this element actually a neon animation?
-          if (animation.isNeonAnimation) {
-            var effect = animation.configure(config);
-            if (effect) {
-              allAnimations.push({
-                animation: animation,
+          if (neonAnimation.isNeonAnimation) {
+            var result = null;
+            // configuration or play could fail if polyfills aren't loaded
+            try {
+              result = neonAnimation.configure(config);
+              // Check if we have an Effect rather than an Animation
+              if (typeof result.cancel != 'function') { 
+                result = document.timeline.play(result);
+              }
+            } catch (e) {
+              result = null;
+              console.warn('Couldnt play', '(', config.name, ').', e);
+            }
+            if (result) {
+              results.push({
+                neonAnimation: neonAnimation,
                 config: config,
-                effect: effect
+                animation: result,
               });
             }
           } else {
@@ -19173,16 +19157,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       }
-      return allAnimations;
+      return results;
     },
 
-    _runAnimationEffects: function(allEffects) {
-      return document.timeline.play(new GroupEffect(allEffects));
+    _shouldComplete: function(activeEntries) {
+      var finished = true;
+      for (var i = 0; i < activeEntries.length; i++) {
+        if (activeEntries[i].animation.playState != 'finished') {
+          finished = false;
+          break;
+        }
+      }
+      return finished;
     },
 
-    _completeAnimations: function(allAnimations) {
-      for (var animation, index = 0; animation = allAnimations[index]; index++) {
-        animation.animation.complete(animation.config);
+    _complete: function(activeEntries) {
+      for (var i = 0; i < activeEntries.length; i++) {
+        activeEntries[i].neonAnimation.complete(activeEntries[i].config);
+      }
+      for (var i = 0; i < activeEntries.length; i++) {
+        activeEntries[i].animation.cancel();
       }
     },
 
@@ -19192,43 +19186,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * @param {!Object=} cookie
      */
     playAnimation: function(type, cookie) {
-      var allConfigs = this.getAnimationConfig(type);
-      if (!allConfigs) {
+      var configs = this.getAnimationConfig(type);
+      if (!configs) {
         return;
       }
-      try {
-        var allAnimations = this._configureAnimationEffects(allConfigs);
-        var allEffects = allAnimations.map(function(animation) {
-          return animation.effect;
-        });
-
-        if (allEffects.length > 0) {
-          this._player = this._runAnimationEffects(allEffects);
-          this._player.onfinish = function() {
-            this._completeAnimations(allAnimations);
-
-            if (this._player) {
-              this._player.cancel();
-              this._player = null;
-            }
-
-            this.fire('neon-animation-finish', cookie, {bubbles: false});
-          }.bind(this);
-          return;
-        }
-      } catch (e) {
-        console.warn('Couldnt play', '(', type, allConfigs, ').', e);
+      this._active = this._active || {};
+      if (this._active[type]) {
+        this._complete(this._active[type]);
+        delete this._active[type];
       }
-      this.fire('neon-animation-finish', cookie, {bubbles: false});
+
+      var activeEntries = this._configureAnimations(configs);
+
+      if (activeEntries.length == 0) {
+        this.fire('neon-animation-finish', cookie, {bubbles: false});
+        return;
+      }
+
+      this._active[type] = activeEntries;
+
+      for (var i = 0; i < activeEntries.length; i++) {
+        activeEntries[i].animation.onfinish = function() {
+          if (this._shouldComplete(activeEntries)) {
+            this._complete(activeEntries);
+            delete this._active[type];
+            this.fire('neon-animation-finish', cookie, {bubbles: false});
+          }
+        }.bind(this);
+      }
     },
 
     /**
-     * Cancels the currently running animation.
+     * Cancels the currently running animations.
      */
     cancelAnimation: function() {
-      if (this._player) {
-        this._player.cancel();
+      for (var k in this._animations) {
+        this._animations[k].cancel();
       }
+      this._animations = {};
     }
   };
 
@@ -19335,10 +19330,11 @@ Material design: [Dialogs](https://www.google.com/design/spec/components/dialogs
 `<paper-dialog>` is a dialog with Material Design styling and optional animations when it is
 opened or closed. It provides styles for a header, content area, and an action area for buttons.
 You can use the `<paper-dialog-scrollable>` element (in its own repository) if you need a scrolling
-content area. See `Polymer.PaperDialogBehavior` for specifics.
+content area. To autofocus a specific child element after opening the dialog, give it the `autofocus`
+attribute. See `Polymer.PaperDialogBehavior` and `Polymer.IronOverlayBehavior` for specifics.
 
 For example, the following code implements a dialog with a header, scrolling content area and
-buttons.
+buttons. Focus will be given to the `dialog-confirm` button when the dialog is opened.
 
     <paper-dialog>
       <h2>Header</h2>
@@ -19347,7 +19343,7 @@ buttons.
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm>Accept</paper-button>
+        <paper-button dialog-confirm autofocus>Accept</paper-button>
       </div>
     </paper-dialog>
 
@@ -19410,17 +19406,11 @@ element.
 
     _renderOpened: function() {
       this.cancelAnimation();
-      if (this.withBackdrop) {
-        this.backdropElement.open();
-      }
       this.playAnimation('entry');
     },
 
     _renderClosed: function() {
       this.cancelAnimation();
-      if (this.withBackdrop) {
-        this.backdropElement.close();
-      }
       this.playAnimation('exit');
     },
 
@@ -21027,15 +21017,14 @@ Note: announcements are only audible if you have a screen reader enabled.
 -->
 
 <dom-module id="iron-a11y-announcer" assetpath="iron-a11y-announcer/">
-  <style>
-    :host {
-      display: inline-block;
-      position: fixed;
-      clip: rect(0px,0px,0px,0px);
-    }
-  </style>
-
   <template>
+    <style>
+      :host {
+        display: inline-block;
+        position: fixed;
+        clip: rect(0px,0px,0px,0px);
+      }
+    </style>
     <div aria-live$="[[mode]]">[[_text]]</div>
   </template>
 
@@ -21613,7 +21602,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * element, bind this to the `<input is="iron-input">`'s `autofocus` property.
        */
       autofocus: {
-        type: Boolean
+        type: Boolean,
+        observer: '_autofocusChanged'
       },
 
       /**
@@ -21929,6 +21919,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           bubbles: event.bubbles,
           cancelable: event.cancelable
         });
+      }
+    },
+
+    _autofocusChanged: function() {
+      // Firefox doesn't respect the autofocus attribute if it's applied after
+      // the page is loaded (Chrome/WebKit do respect it), preventing an
+      // autofocus attribute specified in markup from taking effect when the
+      // element is upgraded. As a workaround, if the autofocus property is set,
+      // and the focus hasn't already been moved elsewhere, we take focus.
+      if (this.autofocus && this._focusableElement) {
+
+        // In IE 11, the default document.activeElement can be the page's
+        // outermost html element, but there are also cases (under the
+        // polyfill?) in which the activeElement is not a real HTMLElement, but
+        // just a plain object. We identify the latter case as having no valid
+        // activeElement.
+        var activeElement = document.activeElement;
+        var isActiveElementValid = activeElement instanceof HTMLElement;
+
+        // Has some other element has already taken the focus?
+        var isSomeElementActive = isActiveElementValid &&
+            activeElement !== document.body &&
+            activeElement !== document.documentElement; /* IE 11 */
+        if (!isSomeElementActive) {
+          // No specific element has taken the focus yet, so we can take it.
+          this._focusableElement.focus();
+        }
       }
     }
   }
@@ -22868,14 +22885,14 @@ style this element.
 
       <content select="[prefix]"></content>
 
-      <label hidden$="[[!label]]" aria-hidden="true">[[label]]</label>
+      <label hidden$="[[!label]]" aria-hidden="true" for="input">[[label]]</label>
 
       <input is="iron-input" id="input" aria-labelledby$="[[_ariaLabelledBy]]" aria-describedby$="[[_ariaDescribedBy]]" disabled$="[[disabled]]" title$="[[title]]" bind-value="{{value}}" invalid="{{invalid}}" prevent-invalid-input="[[preventInvalidInput]]" allowed-pattern="[[allowedPattern]]" validator="[[validator]]" type$="[[type]]" pattern$="[[pattern]]" required$="[[required]]" autocomplete$="[[autocomplete]]" autofocus$="[[autofocus]]" inputmode$="[[inputmode]]" minlength$="[[minlength]]" maxlength$="[[maxlength]]" min$="[[min]]" max$="[[max]]" step$="[[step]]" name$="[[name]]" placeholder$="[[placeholder]]" readonly$="[[readonly]]" list$="[[list]]" size$="[[size]]" autocapitalize$="[[autocapitalize]]" autocorrect$="[[autocorrect]]" on-change="_onChange" tabindex$="[[tabindex]]" autosave$="[[autosave]]" results$="[[results]]" accept$="[[accept]]" multiple$="[[multiple]]">
 
       <content select="[suffix]"></content>
 
       <template is="dom-if" if="[[errorMessage]]">
-        <paper-input-error>[[errorMessage]]</paper-input-error>
+        <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
       </template>
 
       <template is="dom-if" if="[[charCounter]]">
@@ -23305,20 +23322,21 @@ method is called on the element.
 -->
 
 <dom-module id="iron-dropdown" assetpath="iron-dropdown/">
-  <style>
-    :host {
-      position: fixed;
-    }
-
-    #contentWrapper ::content > * {
-      overflow: auto;
-    }
-
-    #contentWrapper.animating ::content > * {
-      overflow: hidden;
-    }
-  </style>
   <template>
+    <style>
+      :host {
+        position: fixed;
+      }
+
+      #contentWrapper ::content > * {
+        overflow: auto;
+      }
+
+      #contentWrapper.animating ::content > * {
+        overflow: hidden;
+      }
+    </style>
+
     <div id="contentWrapper">
       <content id="content" select=".dropdown-content"></content>
     </div>
@@ -23932,6 +23950,15 @@ Custom property | Description | Default
           },
 
           /**
+           * Set to true to enable automatically closing the dropdown after an
+           * item has been activated, even if the selection did not change.
+           */
+          closeOnActivate: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
            * An animation config. If provided, this will be used to animate the
            * opening of the dropdown.
            */
@@ -24006,6 +24033,7 @@ Custom property | Description | Default
         },
 
         listeners: {
+          'iron-activate': '_onIronActivate',
           'iron-select': '_onIronSelect'
         },
 
@@ -24066,6 +24094,18 @@ Custom property | Description | Default
          */
         _onIronSelect: function(event) {
           if (!this.ignoreSelect) {
+            this.close();
+          }
+        },
+
+        /**
+         * Closes the dropdown when an `iron-activate` event is received if
+         * `closeOnActivate` is true.
+         *
+         * @param {CustomEvent} event A CustomEvent of type 'iron-activate'.
+         */
+        _onIronActivate: function(event) {
+          if (this.closeOnActivate) {
             this.close();
           }
         },
@@ -24472,7 +24512,7 @@ respectively.
 
     <!-- this div fulfills an a11y requirement for combobox, do not remove -->
     <span role="button"></span>
-    <paper-menu-button id="menuButton" vertical-align="[[verticalAlign]]" horizontal-align="[[horizontalAlign]]" vertical-offset="[[_computeMenuVerticalOffset(noLabelFloat)]]" disabled="[[disabled]]" no-animations="[[noAnimations]]" on-iron-select="_onIronSelect" on-iron-deselect="_onIronDeselect" opened="{{opened}}" allow-outside-scroll="[[allowOutsideScroll]]">
+    <paper-menu-button id="menuButton" vertical-align="[[verticalAlign]]" horizontal-align="[[horizontalAlign]]" vertical-offset="[[_computeMenuVerticalOffset(noLabelFloat)]]" disabled="[[disabled]]" no-animations="[[noAnimations]]" on-iron-select="_onIronSelect" on-iron-deselect="_onIronDeselect" opened="{{opened}}" close-on-activate="" allow-outside-scroll="[[allowOutsideScroll]]">
       <div class="dropdown-trigger">
         <paper-ripple></paper-ripple>
         <!-- paper-input has type="text" for a11y, do not remove -->
@@ -24714,7 +24754,7 @@ respectively.
           if (!selectedItem) {
             value = '';
           } else {
-            value = selectedItem.label || selectedItem.textContent.trim();
+            value = selectedItem.label || selectedItem.getAttribute('label') || selectedItem.textContent.trim();
           }
 
           this._setValue(value);
@@ -27759,6 +27799,14 @@ paper-scroll-header-panel {
 `paper-scroll-header-panel` works well with `paper-toolbar` but can use any element
 that represents a header by adding a `paper-header` class to it.
 
+Note: If the class `paper-header` is used, the header must be positioned relative or absolute. e.g.
+
+```css
+.paper-header {
+  position: relative;
+}
+```
+
 ```html
 <paper-scroll-header-panel>
   <div class="paper-header">Header</div>
@@ -27775,7 +27823,8 @@ Custom property | Description | Default
 ----------------|-------------|----------
 --paper-scroll-header-panel-full-header | To change background for toolbar when it is at its full size | {}
 --paper-scroll-header-panel-condensed-header | To change the background for toolbar when it is condensed | {}
---paper-scroll-header-container | To override or add container styles | {}
+--paper-scroll-header-panel-container | To override or add container styles | {}
+--paper-scroll-header-panel-header-container | To override or add header styles | {}
 
 @group Paper Element
 @element paper-scroll-header-panel
@@ -27793,71 +27842,72 @@ Custom property | Description | Default
 -->
 
 <dom-module id="paper-scroll-header-panel" assetpath="paper-scroll-header-panel/">
-
-  <style>
-    :host {
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #mainContainer {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      -webkit-overflow-scrolling: touch;
-
-      overflow-x: hidden;
-      overflow-y: auto;
-
-      @apply(--paper-scroll-header-container);
-    }
-
-    #headerContainer {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-    }
-
-    .bg-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    #headerBg {
-      @apply(--paper-scroll-header-panel-full-header);
-    }
-
-    #condensedHeaderBg {
-      @apply(--paper-scroll-header-panel-condensed-header);
-    }
-
-    #headerBg, #condensedHeaderBg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-    }
-
-    #condensedHeaderBg {
-      opacity: 0;
-    }
-  </style>
   <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #mainContainer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+        @apply(--paper-scroll-header-container); /* deprecated due to incorrect/confusing naming */
+        @apply(--paper-scroll-header-panel-container);
+      }
+
+      #headerContainer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        @apply(--paper-scroll-header-panel-header-container);
+      }
+
+      .bg-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #headerBg {
+        @apply(--paper-scroll-header-panel-full-header);
+      }
+
+      #condensedHeaderBg {
+        @apply(--paper-scroll-header-panel-condensed-header);
+      }
+
+      #headerBg, #condensedHeaderBg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      #condensedHeaderBg {
+        opacity: 0;
+      }
+    </style>
+
     <div id="mainContainer">
       <content id="mainContent" select=":not(paper-toolbar):not(.paper-header)"></content>
     </div>
