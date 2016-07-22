@@ -4,6 +4,7 @@ tags:
 lang: en
 category: book
 label: post-quixote-IV
+cover: https://upload.wikimedia.org/wikipedia/commons/c/ce/El_ingenioso_hidalgo_Don_Quijote_del_Mancha_pg_88.jpg
 ---
 
 Day was dawning when Don Quixote quitted the inn, so happy, so gay, so exhilarated at finding himself now dubbed a knight, that his joy was like to burst his horse-girths. However, recalling the advice of his host as to the requisites he ought to carry with him, especially that referring to money and shirts, he determined to go home and provide himself with all, and also with a squire, for he reckoned upon securing a farm-labourer, a neighbour of his, a poor man with a family, but very well qualified for the office of squire to a knight. With this object he turned his horse's head towards his village, and Rocinante, thus reminded of his old quarters, stepped out so briskly that he hardly seemed to tread the earth.

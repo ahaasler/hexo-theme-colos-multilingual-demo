@@ -4,6 +4,7 @@ tags:
 lang: es
 category: libro
 label: post-quixote-IV
+cover: https://upload.wikimedia.org/wikipedia/commons/c/ce/El_ingenioso_hidalgo_Don_Quijote_del_Mancha_pg_88.jpg
 ---
 
 La del alba sería cuando don Quijote salió de la venta, tan contento, tan gallardo, tan alborozado por verse ya armado caballero, que el gozo le reventaba por las cinchas del caballo. Mas, viniéndole a la memoria los consejos de su huésped cerca de las prevenciones tan necesarias que había de llevar consigo, especial la de los dineros y camisas, determinó volver a su casa y acomodarse de todo, y de un escudero, haciendo cuenta de recebir a un labrador vecino suyo, que era pobre y con hijos, pero muy a propósito para el oficio escuderil de la caballería. Con este pensamiento guió a Rocinante hacia su aldea, el cual, casi conociendo la querencia, con tanta gana comenzó a caminar, que parecía que no ponía los pies en el suelo.

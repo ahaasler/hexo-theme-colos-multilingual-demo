@@ -4,6 +4,7 @@ tags:
 lang: es
 category: libro
 label: post-quixote-III
+cover: https://upload.wikimedia.org/wikipedia/commons/c/ce/El_ingenioso_hidalgo_Don_Quijote_del_Mancha_pg_88.jpg
 ---
 
 Y así, fatigado deste pensamiento, abrevió su venteril y limitada cena; la cual acabada, llamó al ventero, y, encerrándose con él en la caballeriza, se hincó de rodillas ante él, diciéndole:
