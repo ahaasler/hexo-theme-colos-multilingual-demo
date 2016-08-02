@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "hexo": {
-    "version": "3.2.0"
+    "version": "3.2.2"
   },
   "dependencies": {
     "deepmerge": "^0.2.10",
-    "hexo": "^3.2.0",
+    "hexo": "^3.2.2",
     "hexo-deployer-git": "0.0.4",
     "hexo-generator-multilingual-archive": "^0.2.0",
     "hexo-generator-multilingual-category": "^0.3.2",
