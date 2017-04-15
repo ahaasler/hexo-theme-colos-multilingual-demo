@@ -13,6 +13,13 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+
+Carousel code inspired by dsc-polymer-carousel under the MIT license found at
+https://github.com/discovery-tecnologia/dsc-polymer-carousel/blob/master/LICENSE.txt
+
+Modifications: Adrian Haasler <dev@adrianhaasler.com>
+- Change import paths for colos file hierarchy.
+- Add function to change image
 --><!--
 app-header is container element for app-toolbars at the top of the screen that can have scroll
 effects. By default, an app-header moves away from the viewport when scrolling down and
@@ -1040,7 +1047,7 @@ default:
 return value != null ? value : undefined;
 }
 }
-});Polymer.version = "1.8.1";Polymer.Base._addFeature({
+});Polymer.version = "1.9.0";Polymer.Base._addFeature({
 _registerFeatures: function () {
 this._prepIs();
 this._prepBehaviors();
@@ -1068,10 +1075,83 @@ this._marshalBehaviors();
 
 
 
-<script>Polymer.Base._addFeature({
+<script>(function () {
+function resolveCss(cssText, ownerDocument) {
+return cssText.replace(CSS_URL_RX, function (m, pre, url, post) {
+return pre + '\'' + resolve(url.replace(/["']/g, ''), ownerDocument) + '\'' + post;
+});
+}
+function resolveAttrs(element, ownerDocument) {
+for (var name in URL_ATTRS) {
+var a$ = URL_ATTRS[name];
+for (var i = 0, l = a$.length, a, at, v; i < l && (a = a$[i]); i++) {
+if (name === '*' || element.localName === name) {
+at = element.attributes[a];
+v = at && at.value;
+if (v && v.search(BINDING_RX) < 0) {
+at.value = a === 'style' ? resolveCss(v, ownerDocument) : resolve(v, ownerDocument);
+}
+}
+}
+}
+}
+function resolve(url, ownerDocument) {
+if (url && ABS_URL.test(url)) {
+return url;
+}
+var resolver = getUrlResolver(ownerDocument);
+resolver.href = url;
+return resolver.href || url;
+}
+var tempDoc;
+var tempDocBase;
+function resolveUrl(url, baseUri) {
+if (!tempDoc) {
+tempDoc = document.implementation.createHTMLDocument('temp');
+tempDocBase = tempDoc.createElement('base');
+tempDoc.head.appendChild(tempDocBase);
+}
+tempDocBase.href = baseUri;
+return resolve(url, tempDoc);
+}
+function getUrlResolver(ownerDocument) {
+return ownerDocument.body.__urlResolver || (ownerDocument.body.__urlResolver = ownerDocument.createElement('a'));
+}
+function pathFromUrl(url) {
+return url.substring(0, url.lastIndexOf('/') + 1);
+}
+var CSS_URL_RX = /(url\()([^)]*)(\))/g;
+var URL_ATTRS = {
+'*': [
+'href',
+'src',
+'style',
+'url'
+],
+form: ['action']
+};
+var ABS_URL = /(^\/)|(^#)|(^[\w-\d]*:)/;
+var BINDING_RX = /\{\{|\[\[/;
+Polymer.ResolveUrl = {
+resolveCss: resolveCss,
+resolveAttrs: resolveAttrs,
+resolveUrl: resolveUrl,
+pathFromUrl: pathFromUrl
+};
+Polymer.rootPath = Polymer.Settings.rootPath || pathFromUrl(document.baseURI || window.location.href);
+}());Polymer.Base._addFeature({
 _prepTemplate: function () {
+var module;
 if (this._template === undefined) {
-this._template = Polymer.DomModule.import(this.is, 'template');
+module = Polymer.DomModule.import(this.is);
+this._template = module && module.querySelector('template');
+}
+if (module) {
+var assetPath = module.getAttribute('assetpath') || '';
+var importURL = Polymer.ResolveUrl.resolveUrl(assetPath, module.ownerDocument.baseURI);
+this._importPath = Polymer.ResolveUrl.pathFromUrl(importURL);
+} else {
+this._importPath = '';
 }
 if (this._template && this._template.hasAttribute('is')) {
 this._warn(this._logf('_prepTemplate', 'top-level Polymer template ' + 'must not be a type-extension, found', this._template, 'Move inside simple <template>.'));
@@ -3461,65 +3541,6 @@ return root;
 }
 }
 };
-}());(function () {
-function resolveCss(cssText, ownerDocument) {
-return cssText.replace(CSS_URL_RX, function (m, pre, url, post) {
-return pre + '\'' + resolve(url.replace(/["']/g, ''), ownerDocument) + '\'' + post;
-});
-}
-function resolveAttrs(element, ownerDocument) {
-for (var name in URL_ATTRS) {
-var a$ = URL_ATTRS[name];
-for (var i = 0, l = a$.length, a, at, v; i < l && (a = a$[i]); i++) {
-if (name === '*' || element.localName === name) {
-at = element.attributes[a];
-v = at && at.value;
-if (v && v.search(BINDING_RX) < 0) {
-at.value = a === 'style' ? resolveCss(v, ownerDocument) : resolve(v, ownerDocument);
-}
-}
-}
-}
-}
-function resolve(url, ownerDocument) {
-if (url && ABS_URL.test(url)) {
-return url;
-}
-var resolver = getUrlResolver(ownerDocument);
-resolver.href = url;
-return resolver.href || url;
-}
-var tempDoc;
-var tempDocBase;
-function resolveUrl(url, baseUri) {
-if (!tempDoc) {
-tempDoc = document.implementation.createHTMLDocument('temp');
-tempDocBase = tempDoc.createElement('base');
-tempDoc.head.appendChild(tempDocBase);
-}
-tempDocBase.href = baseUri;
-return resolve(url, tempDoc);
-}
-function getUrlResolver(ownerDocument) {
-return ownerDocument.body.__urlResolver || (ownerDocument.body.__urlResolver = ownerDocument.createElement('a'));
-}
-var CSS_URL_RX = /(url\()([^)]*)(\))/g;
-var URL_ATTRS = {
-'*': [
-'href',
-'src',
-'style',
-'url'
-],
-form: ['action']
-};
-var ABS_URL = /(^\/)|(^#)|(^[\w-\d]*:)/;
-var BINDING_RX = /\{\{|\[\[/;
-Polymer.ResolveUrl = {
-resolveCss: resolveCss,
-resolveAttrs: resolveAttrs,
-resolveUrl: resolveUrl
-};
 }());Polymer.Path = {
 root: function (path) {
 var dotIndex = path.indexOf('.');
@@ -5305,6 +5326,8 @@ node._configValue(name, value);
 }
 },
 _afterClientsReady: function () {
+this.importPath = this._importPath;
+this.rootPath = Polymer.rootPath;
 this._executeStaticEffects();
 this._applyConfig(this._config, this._aboveConfig);
 this._flushHandlers();
@@ -5643,13 +5666,7 @@ _getPathParts: Polymer.Base._getPathParts
 });
 }());Polymer.Base._addFeature({
 resolveUrl: function (url) {
-var module = Polymer.DomModule.import(this.is);
-var root = '';
-if (module) {
-var assetPath = module.getAttribute('assetpath') || '';
-root = Polymer.ResolveUrl.resolveUrl(assetPath, module.ownerDocument.baseURI);
-}
-return Polymer.ResolveUrl.resolveUrl(url, root);
+return Polymer.ResolveUrl.resolveUrl(url, this.importPath);
 }
 });Polymer.CssParse = function () {
 return {
@@ -10068,6 +10085,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       #backgroundFrontLayer {
         @apply(--app-header-background-front-layer);
+        transition: background-image .5s linear;
       }
 
       #backgroundRearLayer {
@@ -10169,6 +10187,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           reflectToAttribute: true,
           value: false
+        },
+
+        /**
+         * Time in seconds to change slide.
+         */
+        interval: {
+          type: Number,
+          value: 5
         }
       },
 
@@ -10227,6 +10253,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _initTimestamp: 0,
       _lastTimestamp: 0,
       _lastScrollTop: 0,
+
+      /**
+       * The slides
+       *
+       * @type {array}
+       */
+      _slides: [],
+
+      /**
+       * The current selected slide.
+       *
+       * @type {number}
+       */
+      _currentSlide: 0,
+
+      ready: function() {
+        this._slides = Polymer.dom(this).querySelectorAll('[slide]');
+        if (this._slides.length > 0) {
+          this._showSlide(0);
+        }
+        if (this._slides.length > 1) {
+          this._initTimer();
+        }
+      },
 
       /**
        * The distance the header is allowed to move away.
@@ -10462,6 +10512,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      _changeBgImage: function(url) {
+        this._getDOMRef('backgroundFrontLayer').style.backgroundImage = url === undefined ? 'none' : 'url(' + url + ')';
+      },
+
       _getDOMRef: function(id) {
         switch (id) {
           case 'backgroundFrontLayer':
@@ -10479,6 +10533,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return Polymer.dom(this).querySelector('[condensed-title]');
         }
         return null;
+      },
+
+      _initTimer: function() {
+        var self = this;
+        this.carouselTimer = setInterval(function() {
+          self._nextSlide();
+        }, this.interval * 1000);
+      },
+
+      /**
+       * Change to next slide.
+       */
+      _nextSlide: function() {
+        this._showSlide((this._currentSlide + 1) % this._slides.length);
+      },
+
+      /**
+       * Show slide for the diven index.
+       */
+      _showSlide: function(index) {
+        this._currentSlide = parseInt(index);
+        for (var i = 0; i < this._slides.length; i++) {
+          this._slides[i].style.display = i !== this._currentSlide ? 'none' : 'inherit';
+        }
+        this._changeBgImage(this._slides[index].getAttribute('bg'))
       },
 
       /**
@@ -18481,7 +18560,8 @@ Custom property | Description | Default
     // NOTE: Use useCapture=true to avoid accidentally prevention of the closing
     // of an overlay via event.stopPropagation(). The only way to prevent
     // closing of an overlay should be through its APIs.
-    Polymer.Gestures.add(document, 'tap', null);
+    // NOTE: enable tap on <html> to workaround Polymer/polymer#4459
+    Polymer.Gestures.add(document.documentElement, 'tap', null);
     document.addEventListener('tap', this._onCaptureClick.bind(this), true);
     document.addEventListener('focus', this._onCaptureFocus.bind(this), true);
     document.addEventListener('keydown', this._onCaptureKeyDown.bind(this), true);
@@ -27676,14 +27756,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       attrForItemTitle: {
         type: String
-      }
+      },
+
+      disabled: {
+        type: Boolean,
+        value: false,
+        observer: '_disabledChanged',
+      },
     },
 
     _SEARCH_RESET_TIMEOUT_MS: 1000,
 
+    _previousTabIndex: 0,
+
     hostAttributes: {
       'role': 'menu',
-      'tabindex': '0'
     },
 
     observers: [
@@ -27872,7 +27959,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      */
     _focusedItemChanged: function(focusedItem, old) {
       old && old.setAttribute('tabindex', '-1');
-      if (focusedItem) {
+      if (focusedItem && !focusedItem.hasAttribute('disabled') && !this.disabled) {
         focusedItem.setAttribute('tabindex', '0');
         focusedItem.focus();
       }
@@ -27996,6 +28083,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _activateHandler: function(event) {
       Polymer.IronSelectableBehavior._activateHandler.call(this, event);
       event.stopPropagation();
+    },
+
+    /**
+     * Updates this element's tab index when it's enabled/disabled.
+     * @param {boolean} disabled
+     */
+    _disabledChanged: function(disabled) {
+      if (disabled) {
+        this._previousTabIndex = this.hasAttribute('tabindex') ? this.tabIndex : 0;
+        this.removeAttribute('tabindex');  // No tabindex means not tab-able or select-able.
+      } else if (!this.hasAttribute('tabindex')) {
+        this.setAttribute('tabindex', this._previousTabIndex);
+      }
     }
   };
 
@@ -28680,6 +28780,7 @@ Custom property | Description | Default
 `--paper-radio-button-ink-size` | Size of the ripple | `48px`
 `--paper-radio-button-label-color` | Label color | `--primary-text-color`
 `--paper-radio-button-label-spacing` | Spacing between the label and the button | `10px`
+`--paper-radio-button-radio-container` | A mixin applied to the internal radio container | `{}`
 
 This element applies the mixin `--paper-font-common-base` but does not import `paper-styles/typography.html`.
 In order to apply the `Roboto` font to this element, make sure you've imported `paper-styles/typography.html`.
@@ -28715,6 +28816,8 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
         width: var(--calculated-paper-radio-button-size);
         height: var(--calculated-paper-radio-button-size);
         vertical-align: middle;
+        
+        @apply(--paper-radio-button-radio-container);
       }
 
       #ink {
@@ -29788,6 +29891,11 @@ Custom property | Description | Default
       :host(:focus) {
         outline: none;
       }
+        
+      :host-context([dir="rtl"]) #sliderContainer {
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+      }
 
       #sliderContainer {
         position: relative;
@@ -30142,8 +30250,10 @@ Custom property | Description | Default
       },
 
       keyBindings: {
-        'left down pagedown home': '_decrementKey',
-        'right up pageup end': '_incrementKey'
+        'left': '_leftKey',
+        'right': '_rightKey',
+        'down pagedown home': '_decrementKey',
+        'up pageup end': '_incrementKey'
       },
 
       /**
@@ -30241,7 +30351,9 @@ Custom property | Description | Default
           this._trackStart(event);
         }
 
-        var dx = Math.min(this._maxx, Math.max(this._minx, event.detail.dx));
+        var direction = this._isRTL ? -1 : 1;
+        var dx = Math.min(
+            this._maxx, Math.max(this._minx, event.detail.dx * direction));
         this._x = this._startx + dx;
 
         var immediateValue = this._calcStep(this._calcKnobPosition(this._x / this._w));
@@ -30279,6 +30391,9 @@ Custom property | Description | Default
         this._w = this.$.sliderBar.offsetWidth;
         var rect = this.$.sliderBar.getBoundingClientRect();
         var ratio = (event.detail.x - rect.left) / this._w;
+        if (this._isRTL) {
+          ratio = 1 - ratio;
+        }
         var prevRatio = this.ratio;
 
         this._setTransiting(true);
@@ -30344,6 +30459,27 @@ Custom property | Description | Default
           transiting: this.transiting,
           editable: this.editable
         });
+      },
+
+      get _isRTL() {
+        if (this.__isRTL === undefined) {
+          this.__isRTL = window.getComputedStyle(this)['direction'] === 'rtl';
+        }
+        return this.__isRTL;
+      },
+
+      _leftKey: function(event) {
+        if (this._isRTL)
+          this._incrementKey(event);
+        else
+          this._decrementKey(event);
+      },
+
+      _rightKey: function(event) {
+        if (this._isRTL)
+          this._decrementKey(event);
+        else
+          this._incrementKey(event);
       },
 
       _incrementKey: function(event) {
@@ -33834,7 +33970,7 @@ Style                                 | Description
 				display: block;
 				padding: 16px 16px 0 16px;
 				background: var(--paper-drawer-title-background-color, black);
-				@apply(--paper-drawer-title);
+				@apply --paper-drawer-title;
 				cursor: pointer;
 			}
 
@@ -33849,10 +33985,10 @@ Style                                 | Description
 				color: var(--paper-drawer-title-color, white);
 				min-height: 56px;
 				height: 56px;
-				@apply(--layout-vertical);
-				@apply(--layout-center-justified);
-				@apply(--layout-flex);
-				@apply(--paper-font-body1);
+				@apply --layout-vertical;
+				@apply --layout-center-justified;
+				@apply --layout-flex;
+				@apply --paper-font-body1;
 			}
 
 			.name,.email {
@@ -33914,9 +34050,9 @@ Adds a subheader to the drawer
 				padding: 0 16px;
 				font-size: 14px!important;
 				color: var(--secondary-text-color);
-				@apply(--paper-font-subhead);
-				@apply(--layout-horizontal);
-				@apply(--layout-center);
+				@apply --paper-font-subhead;
+				@apply --layout-horizontal;
+				@apply --layout-center;
 				cursor: default;
 			}
 		</style>
@@ -33946,19 +34082,15 @@ Item in the drawer without an icon
 	<template>
 
 		<style>
-			:host {
-				@apply(--layout-vertical);
-			}
-			
 			.item {
 				color: var(--primary-text-color);
-				@apply(--paper-font-body1);
+				@apply --paper-font-body1;
 				position: relative;
 				cursor: pointer;
 			}
 
 			.item:hover {
-				background-color: var(--divider-color);
+				background-color: var(--hover-background-color, --divider-color);
 			}
 		</style>
 
@@ -34067,13 +34199,13 @@ Custom property               | Description                                    |
 		<style>
 			.item {
 				color: var(--primary-text-color);
-				@apply(--paper-font-body1);
+				@apply --paper-font-body1;
 				position: relative;
 				cursor: pointer;
 			}
 
 			.item:hover {
-				background-color: var(--divider-color);
+				background-color: var(--hover-background-color, --divider-color);
 			}
 
 			.icon {
@@ -34118,8 +34250,7 @@ Adds divider line in the drawer
 		<style>
 			:host {
 				display: block;
-				border-top: 1px solid #000;
-				opacity: var(--dark-divider-opacity);
+				border-top: 1px solid var(--divider-color);
 				height: 0;
 				margin: 8px 0;
 			}
