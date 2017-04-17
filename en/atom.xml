@@ -4,7 +4,7 @@
   <subtitle xml:lang="en">A Hexo theme</subtitle>
   <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/en/atom.xml" rel="self"/>
   <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/"/>
-  <updated>2016-07-22T21:00:53.000Z</updated>
+  <updated>2017-04-17T17:51:20.179Z</updated>
   <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/</id>
   
   <author>
@@ -76,7 +76,7 @@
     <link href="https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/en/code/bash-hello-world/"/>
     <id>https://ahaasler.github.io/hexo-theme-colos-multilingual-demo/en/code/bash-hello-world/</id>
     <published>2015-08-01T14:45:03.000Z</published>
-    <updated>2016-02-21T16:53:48.000Z</updated>
+    <updated>2017-04-17T17:51:20.179Z</updated>
     <content type="html" xml:lang="en">&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Hello, World!&quot;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 </content>
     <summary type="html" xml:lang="en">
